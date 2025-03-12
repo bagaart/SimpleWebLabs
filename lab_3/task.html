@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Лабораторная работа №3</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        margin: 20px;
+      }
+      td {
+        padding: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        border: 2px solid;
+      }
+      td {
+        width: 100px;
+        height: 100px;
+        border: 2px solid;
+      }
+      .r1 {
+        background-color: gray;
+      }
+      .r2 {
+        background-color: darkgray;
+      }
+      .circle_black {
+        background: black;
+        border-radius: 50%;
+        height: 90px;
+        width: 90px;
+        margin: 0px 0px 0px 5px;
+      }
+      .circle_white {
+        background: white;
+        border-radius: 50%;
+        height: 90px;
+        width: 90px;
+        margin: 0px 0px 0px 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ввод ФИО</h2>
+    <table border="solid">
+      <tr>
+        <td>Фамилия, Имя, Отчество:</td>
+        <td>
+          <input type="text" id="fullName" />
+          <input type="button" value="Подтвердить" onclick="confirmFIO();" />
+        </td>
+      </tr>
+      <tr>
+        <td>Результат:</td>
+        <td><p id="fioResult"></p></td>
+      </tr>
+    </table>
+
+    <h2>Нахождение k-й цифры четной последовательности</h2>
+    <table border="solid">
+      <tr>
+        <td>Введите k:</td>
+        <td>
+          <input type="text" id="kValue" />
+          <input
+            type="button"
+            value="Найти k-ю цифру"
+            onclick="findKthDigit();"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Результат:</td>
+        <td><p id="kthDigitResult"></p></td>
+      </tr>
+    </table>
+
+    <h2>Ввод данных для отрезка</h2>
+    <table border="solid">
+      <tr>
+        <td>Начало отрезка (a):</td>
+        <td>
+          <input type="text" id="parametr_a" />
+        </td>
+      </tr>
+      <tr>
+        <td>Конец отрезка (b):</td>
+        <td>
+          <input type="text" id="parametr_b" />
+        </td>
+      </tr>
+      <tr>
+        <td>Цифра k:</td>
+        <td>
+          <input type="text" id="digit_k" />
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input
+            type="button"
+            value="Вычислить сумму"
+            onclick="calculateSum();"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Результат суммы:</td>
+        <td><p id="sumResult"></p></td>
+      </tr>
+    </table>
+
+    <script type="text/javascript">
+      function confirmFIO() {
+        var fullName = document.getElementById("fullName").value;
+        var fioResult = document.getElementById("fioResult");
+        if (fullName) {
+          var confirmation = confirm(
+            "Вы ввели: " + fullName + ". Это правильно?"
+          );
+          if (confirmation) {
+            fioResult.innerHTML = "Привет, " + fullName + "!";
+          } else {
+            fioResult.innerHTML = "Ошибка ввода. Попробуйте снова.";
+          }
+        } else {
+          fioResult.innerHTML = "Вы не ввели данные. Попробуйте снова.";
+        }
+      }
+
+      function calculateSum() {
+        var a = parseInt(document.getElementById("parametr_a").value);
+        var b = parseInt(document.getElementById("parametr_b").value);
+        var k = document.getElementById("digit_k").value;
+        var sum = 0;
+
+        for (var i = a; i <= b; i++) {
+          if (i.toString().includes(k)) {
+            sum += i;
+          }
+        }
+
+        document.getElementById("sumResult").innerHTML = "Сумма: " + sum;
+      }
+
+      function findKthDigit() {
+        var k = parseInt(document.getElementById("kValue").value);
+        var sequence = "";
+        var evenNumber = 2;
+
+        while (sequence.length < k) {
+          sequence += evenNumber;
+          evenNumber += 2;
+        }
+
+        var kthDigit = sequence.charAt(k - 1);
+        document.getElementById("kthDigitResult").innerHTML =
+          "К-ая цифра: " + kthDigit;
+      }
+    </script>
+
+    <script type="text/javascript">
+      var str,
+        sel,
+        n = 8,
+        i,
+        j;
+      document.write("<table>");
+      for (i = 0; i < n; i++) {
+        document.write("<tr>");
+        for (j = 0; j < n; j++) {
+          sel = (i + j) % 2;
+          if (sel == 0) {
+            str = "class='r1'";
+          } else {
+            str = "class='r2'";
+          }
+
+          if (i < 3 && sel == 1) {
+            document.write(
+              "<td " + str + "><div class='circle_white'></div></td>"
+            );
+          }
+
+          else if (i > 4 && sel == 1) {
+            document.write(
+              "<td " + str + "><div class='circle_black'></div></td>"
+            );
+          } else {
+            document.write("<td " + str + "></td>");
+          }
+        }
+        document.write("</tr>");
+      }
+      document.write("</table>");
+    </script>
+  </body>
+</html>

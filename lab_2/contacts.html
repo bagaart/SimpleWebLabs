@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Контакты</title>
+    <style>
+      /* Базовые стили из предыдущих страниц */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f0f0f0;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: rgb(21, 87, 173);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+      .content {
+        display: flex;
+        padding: 20px;
+        gap: 20px;
+      }
+      .main-col {
+        flex: 1.5;
+      }
+      .sidebar {
+        flex: 1;
+        text-align: center;
+      }
+      .footer {
+        background: #f8f9fa;
+        padding: 15px;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        border-radius: 0 0 8px 8px;
+      }
+      ul {
+        list-style-type: square;
+        padding-left: 20px;
+      }
+      a {
+        color: rgb(21, 87, 173);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+      .important {
+        color: red;
+        font-weight: bold;
+      }
+      .contact-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 4px;
+        margin: 15px 0;
+      }
+      .contact-info p {
+        margin: 12px 0;
+        line-height: 1.6;
+      }
+      .contact-info a {
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+      .contact-info a:hover {
+        color: rgb(21, 87, 173);
+      }
+      .contact-image {
+        margin: 25px 0;
+      }
+      .contact-image img {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Контакты</h1>
+      </div>
+
+      <div class="content">
+        <div class="main-col">
+          <div class="contact-info">
+            <h2>Связь со мной</h2>
+            <p>
+              Email:
+              <a href="mailto:art10ka08vazs@gmail.com"
+                >art10ka08vazs@gmail.com</a
+              >
+            </p>
+            <p>Телефон: +7 927 322-72-21</p>
+            <p>Адрес: нет</p>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <div class="contact-image">
+            <img src="contacts.png" alt="Контакты" />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">Назад: <a href="index.html">Главная</a></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: rgb(21, 87, 173);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+        .main-col {
+            flex: 1.5;
+        }
+        .sidebar {
+            flex: 1;
+            text-align: center;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        a {
+            color: rgb(21, 87, 173);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .important {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Добро пожаловать!</h1>
+        </div>
+        
+        <div class="content">
+            <div class="main-col">
+                <h2>Приветствую на моем сайте</h2>
+                <p>Здесь вы узнаете обо мне:</p>
+                <ul>
+                    <li><a href="about.html">Обо мне</a></li>
+                    <li><a href="education.html">Образование</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar">
+                <img src="main.webp" alt="Главная иллюстрация">
+                <p><span class="important">Важно:</span> Все данные носят учебный характер</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 Артём Багаутдинов
+        </div>
+    </div>
+</body>
+</html>
