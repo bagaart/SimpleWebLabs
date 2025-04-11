@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        #graphCanvas {
+            border: 1px solid #ccc;
+            background: white;
+        }
+        
+        .controls {
+            margin-top: 10px;
+        }
+        
+        .poker-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .card-img {
+            width: 60px;
+            height: 84px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="graphCanvas" width="600" height="600"></canvas>
+        <div class="controls">
+            <button onclick="shiftGraph(-50, 0)">← Влево</button>
+            <button onclick="shiftGraph(50, 0)">→ Вправо</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="poker-section">
+            <h3>Покерная раздача</h3>
+            <button onclick="generateHand()">Сгенерировать раздачу</button>
+            <div class="cards-container" id="cardsContainer"></div>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let params = {
+            scale: 50,
+            shiftX: 0,
+            shiftY: 0
+        };
+
+        function parseUriParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            params.scale = Math.max(10, parseInt(urlParams.get('scale'))) || 50;
+            params.shiftX = parseInt(urlParams.get('shiftX')) || 0;
+            params.shiftY = parseInt(urlParams.get('shiftY')) || 0;
+        }
+
+        function updateUrl() {
+            const newUrl = `${window.location.pathname}?scale=${params.scale}&shiftX=${params.shiftX}&shiftY=${params.shiftY}`;
+            window.history.replaceState(null, '', newUrl);
+        }
+
+        function drawGrid() {
+            ctx.strokeStyle = '#ddd';
+            ctx.beginPath();
+
+            for(let x = -300; x <= 300; x += params.scale) {
+                const screenX = x * params.scale + 300 + params.shiftX;
+                ctx.moveTo(screenX, 0);
+                ctx.lineTo(screenX, 600);
+            }
+
+            for(let y = -300; y <= 300; y += params.scale) {
+                const screenY = -y * params.scale + 300 + params.shiftY;
+                ctx.moveTo(0, screenY);
+                ctx.lineTo(600, screenY);
+            }
+
+            ctx.stroke();
+
+            ctx.strokeStyle = 'black';
+            ctx.beginPath();
+            ctx.moveTo(300 + params.shiftX, 0);
+            ctx.lineTo(300 + params.shiftX, 600);
+            ctx.moveTo(0, 300 + params.shiftY);
+            ctx.lineTo(600, 300 + params.shiftY);
+            ctx.stroke();
+        }
+
+        function drawGraph() {
+            ctx.clearRect(0, 0, 600, 600);
+            drawGrid();
+            
+            ctx.strokeStyle = 'red';
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for(let x = -300; x <= 300; x += 0.1) {
+                try {
+                    const realX = (x - params.shiftX)/params.scale;
+                    const y = 1 / Math.tan(1 - realX);
+                    
+                    if(Math.abs(y) > 100) throw "Asymptote";
+                    
+                    const screenY = -y * params.scale + 300 + params.shiftY;
+                    const screenX = x + 300;
+                    
+                    if(firstPoint) {
+                        ctx.moveTo(screenX, screenY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(screenX, screenY);
+                    }
+                } catch(e) {
+                    firstPoint = true;
+                }
+            }
+            
+            ctx.stroke();
+        }
+
+        function shiftGraph(dx, dy) {
+            params.shiftX += dx;
+            params.shiftY += dy;
+            updateUrl();
+            drawGraph();
+        }
+
+        parseUriParams();
+        drawGraph();
+
+        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const suits = ['heart', 'diamond', 'club', 'spade'];
+        let deck = [];
+
+        function initDeck() {
+            deck = [];
+            for (let suit of suits) {
+                for (let rank of ranks) {
+                    deck.push({rank, suit});
+                }
+            }
+        }
+
+        function shuffleDeck(){
+            let shuffled = [];
+            while (deck.length > 0) {
+                const randomIndex = Math.floor(Math.random() * deck.length);
+                shuffled.push(deck.splice(randomIndex, 1)[0]);
+            }
+            deck = shuffled;
+        }
+
+        function checkFourOfAKind(hand) {
+            const rankCounts = {};
+            for(let card of hand) {
+                rankCounts[card.rank] = (rankCounts[card.rank] || 0) + 1;
+                if(rankCounts[card.rank] === 4) return true;
+            }
+            return false;
+        }
+
+        function generateHand() {
+            try {
+                initDeck();
+                shuffleDeck();
+                const hand = deck.splice(0, 5);
+
+                const container = document.getElementById('cardsContainer');
+                container.innerHTML = '';
+                hand.forEach(card => {
+                    const img = document.createElement('img');
+                    img.className = 'card-img';
+                    img.src = `cards/40px-Playing_card_${card.suit}_${card.rank}.svg.png`;
+                    img.alt = `${card.rank} ${card.suit}`;
+                    container.appendChild(img);
+                });
+
+                if(checkFourOfAKind(hand)) {
+                    document.getElementById('result').textContent = 'Каре!';
+                } else {
+                    throw new Error('Нет игры');
+                }
+            } catch (e) {
+                document.getElementById('result').textContent = e.message;
+            } finally {
+                console.log('Проверка завершена');
+            }
+        }
+
+    </script>
+</body>

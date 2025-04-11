@@ -1,0 +1,33 @@
+.tabs a span {
+    display: inline-block;
+    border-radius: 5px 5px 0 0;
+    width: 120px;
+    margin-right: 10px;
+    text-align: center;
+    background: #ddd;
+    padding: 5px;
+}
+
+.tabs a span.active {
+    background: #eee;
+}
+
+.content ul {
+    padding: 20px;
+}
+
+.content li {
+    background: lavender;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.content h3 {
+    color: blueviolet;
+    margin-top: 20px;
+}
+
+.input-group {
+    margin: 10px;
+}

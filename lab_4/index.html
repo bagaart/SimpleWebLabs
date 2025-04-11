@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Задания</title>
+    <style>
+        .section { margin: 20px 0; }
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse; 
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <p>1-6. Дано натуральное число N. Найти наименьшее число М (N< M < 2N), которое делится
+            на сумму цифр числа N (без остатка). Если такого числа нет, то вывести слово «нет».</p>
+        <input type="number" id="N" min="1" placeholder="Введите N">
+        <button onclick="solveTask()">Найти M</button>
+        <p id="resultM"></p>
+    </div>
+
+    <div class="section">
+        <p>7. Текущий день недели, число, месяц и год.</p>
+        <table id="dataTable"></table>
+    </div>
+
+    <div class="section">
+        <p id="sessionDays"></p>
+    </div>
+
+    <div class="section">
+        <button onclick="askDate()">9. Ввести дату</button>
+        <p id="memoryDate"></p>
+        <p id="memoryDateLeft"></p>
+    </div>
+
+    <div class="section">
+        <p>10. Формула последователности: (-1)^n · (n-1)^3</p>
+        <button onclick="calculateSum()">Вычислить сумму первых N членов</button>
+        <p id="sequenceSum"></p>
+    </div>
+
+    <script>
+
+const taskData = {
+            input: null,
+            sum: null,
+            result: null
+        };
+
+        function sumDigits(data) {
+            data.sum = String(data.input).split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+        }
+
+        function findM(data) {
+            data.result = 'нет';
+            if (data.sum === 0) return;
+            for (let M = data.input + 1; M < 2 * data.input; M++) {
+                if (M % data.sum === 0) {
+                    data.result = M;
+                    break;
+                }
+            }
+        }
+
+        function solveTask() {
+            taskData.input = parseInt(document.getElementById('N').value, 10);
+            if (isNaN(taskData.input) || taskData.input < 1) {
+                alert('Введите корректное N');
+                return;
+            }
+            sumDigits(taskData);
+            findM(taskData);
+            document.getElementById('resultM').textContent = 
+                `Результат: ${taskData.result !== 'нет' ? taskData.result : 'нет'}`;
+        }
+        
+        const months = [
+            'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ];
+
+        const days = [
+            'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+        ]
+
+        const today = new Date();
+        const dataTable = document.getElementById('dataTable');
+        dataTable.innerHTML = ` 
+            <tr><td>${days[today.getDay()]}</td></tr>
+            <tr><td>${today.getDate()} ${months[today.getMonth()]}</td></tr>
+            <tr><td>${today.getFullYear()}</td></tr>
+        `;
+
+        const sessionDate = new Date(2025, 5, 10);
+        const diff = sessionDate - today;
+        const daysLeft = Math.ceil(diff / (1000 * 3600 * 24));
+        document.getElementById('sessionDays').textContent = `8. Дней до сессии отсалось: ${daysLeft} `;
+
+        function askDate() {
+            const dateStr = prompt('Введите дату в формате ГГГГ-ММ-ДД (например, 2023-10-25):');
+
+            if (dateStr === null) {
+                document.getElementById('memoryDate').textContent = 'Дата не введена';
+                document.getElementById('memoryDateLeft').textContent = '';
+                return;
+            }
+
+            const date = new Date(dateStr);
+
+            if (isNaN(date.getTime())) {
+                document.getElementById('memoryDate').textContent = 'Ошибка: некорректная дата';
+                document.getElementById('memoryDateLeft').textContent = '';
+                return;
+            }
+
+            const today = new Date();
+            const diffMs = today - date;
+            const daysPassed = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            let message;
+            if (daysPassed < 0) {
+                message = `До даты осталось: ${-daysPassed} дней`;
+            } else {
+                message = `Дней прошло: ${daysPassed}`;
+            }
+
+            document.getElementById('memoryDate').textContent = `Памятная дата: ${dateStr}`;
+            document.getElementById('memoryDateLeft').textContent = message;
+        }
+
+        function calculateSum() {
+            const start = parseInt(prompt('Введите начальный номер:'), 10);
+            const count = parseInt(prompt('Введите количество членов:'), 10);
+            
+            if (isNaN(start) || isNaN(count) || start < 1 || count < 1) {
+                alert('Некорректный ввод');
+                return;
+            }
+
+            let sum = 0;
+            for (let i = 0; i < count; i++) {
+                const n = start + i;
+                sum += Math.pow(-1, n) * Math.pow(n - 1, 3);
+            }
+            document.getElementById('sequenceSum').textContent = `Сумма: ${sum}`;
+        }
+
+    </script>
+</body>
